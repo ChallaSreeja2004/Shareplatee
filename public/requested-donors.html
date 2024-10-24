@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requested Donors - Share Plate</title>
+    <link rel="stylesheet" href="css/request.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        function cancelRequest(donorName) {
+            if (confirm(`Are you sure you want to cancel the request for ${donorName}?`)) {
+                // Perform the cancellation logic here (e.g., make an API call to cancel the request)
+                alert(`${donorName}'s request has been cancelled.`);
+                // Optionally, remove the row from the table or refresh the data
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Requested Donors</h1>
+        <p>Here are the donors you have requested.</p>
+    </header>
+
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Donor Name</th>
+                    <th>Mobile Number</th>
+                    <th>Email</th>
+                    <th>Time of Request</th>
+                    <th>Quantity</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Donor 1</td>
+                    <td>+91 12345 67890</td>
+                    <td>donor1@example.com</td>
+                    <td>2024-10-19 10:30 AM</td>
+                    <td>10 kg</td>
+                    <td>Pending</td>
+                    <td><button onclick="cancelRequest('Donor 1')">Cancel</button></td>
+                </tr>
+                <tr>
+                    <td>Donor 2</td>
+                    <td>+91 09876 54321</td>
+                    <td>donor2@example.com</td>
+                    <td>2024-10-19 11:00 AM</td>
+                    <td>50 loaves</td>
+                    <td>Accepted</td>
+                    <td><button onclick="cancelRequest('Donor 2')">Cancel</button></td>
+                </tr>
+                <tr>
+                    <td>Donor 3</td>
+                    <td>+91 11223 44556</td>
+                    <td>donor3@example.com</td>
+                    <td>2024-10-19 11:30 AM</td>
+                    <td>5 kg</td>
+                    <td>Rejected</td>
+                    <td><button onclick="cancelRequest('Donor 3')">Cancel</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Share Plate. All rights reserved.</p>
+    </footer>
+    <script src="map.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!-- login-donor.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Login - Share Plate</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        axios.interceptors.request.use(config => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        }, error => {
+            return Promise.reject(error);
+        });
+    
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            const errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.style.display = 'none'; // Hide it initially
+    
+            try {
+                const response = await axios.post('/login-donor', { email, password });
+                if (response.data.token) {
+                    localStorage.setItem('donorId', response.data.donorId);
+                    localStorage.setItem('token', response.data.token);
+                    window.location.href = 'donor-dashboard.html';
+                } else {
+                    errorMessageDiv.textContent = response.data.message || 'Login failed. Please try again.';
+                    errorMessageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorMessageDiv.textContent = error.response?.data?.message || 'Login failed. Please check your credentials and try again.';
+                errorMessageDiv.style.display = 'block';
+                console.error('Error logging in:', error);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Donor Login</h1>
+        <p>Please enter your credentials to log in.</p>
+    </header>
+
+    <div class="container">
+        <form onsubmit="handleSubmit(event)" method="POST" aria-labelledby="login-header">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required aria-required="true" aria-invalid="false">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required aria-required="true" aria-invalid="false">
+            </div>
+            <button type="submit">Login</button>
+            <p>Not registered? <a href="register-donor.html">Register here</a></p>
+        </form>
+        <div id="error-message" class="error-message" style="display: none; color: red;"></div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Share Plate. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

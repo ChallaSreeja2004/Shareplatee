@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard - Share Plate</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- In donor-dashboard.html -->
+    <script>
+        const ngoId = localStorage.getItem('ngoId'); // Retrieve ngoId from localStorage
+
+        document.querySelector('.button').addEventListener('click', () => {
+            if (ngoId) {
+                window.location.href = `request.html?ngoId=${ngoId}`;
+            } else {
+                alert('No NGO ID found. Please log in again.');
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <h1>Welcome, Donor!</h1>
+        <p>What would you like to do today?</p>
+    </header>
+
+    <div class="container">
+        <div class="section">
+            <h2>Accept Requests</h2>
+            <p>View and accept requests from NGOs for food donations.</p>
+            <a href="request.html" class="button">Go to Requests</a>
+        </div>
+        <div class="section">
+            <h2>Donate Food</h2>
+            <p>Enter details to donate food.</p>
+            <a href="donate-food.html" class="button">Donate Food</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Share Plate. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

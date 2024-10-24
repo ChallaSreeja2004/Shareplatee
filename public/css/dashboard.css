@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+.container {
+    display: flex; /* Enable flexbox layout for horizontal alignment */
+    justify-content: center; /* Center the sections */
+    align-items: stretch; /* Ensure sections stretch to the same height */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 100%; /* Make the container full width */
+    max-width: 800px; /* Limit max width for the container */
+    margin-top: 20px; /* Margin above the container */
+}
+
+.section {
+    margin: 10px; /* Space between sections */
+    padding: 20px; /* Padding inside each section */
+    text-align: center;
+    border: 1px solid #ccc; /* Border around sections */
+    border-radius: 8px;
+    flex: 1; /* Allow sections to grow equally */
+    transition: box-shadow 0.3s; /* Transition for hover effect */
+}
+
+.section:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Slight elevation on hover */
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 10px; /* Ensure some space above the button */
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+    width: 100%;
+    margin-top: auto; /* Pushes the footer to the bottom */
+}
