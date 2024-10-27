@@ -1,4 +1,7 @@
-const Donor = require('../models/donorModel');
+const User = require('../models/userModel');
+const ngo=require('../models/ngoModel');
+const foodDonation=require('../models/foodDonationModel');
+const requests=require('../models/requestModel');
 const bcrypt = require('bcrypt');
 
 // Create Donor
@@ -44,7 +47,7 @@ const getDonorById = async (req, res) => {
     try {
         const { donorId } = req.params;
 
-        const donor = await Donor.findById(donorId);
+        const donor = await User.findOne({_id:donorId, role:'donor'});
         if (!donor) {
             return res.status(404).json({ success: false, message: 'Donor not found' });
         }

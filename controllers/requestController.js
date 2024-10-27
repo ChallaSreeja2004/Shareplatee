@@ -1,6 +1,6 @@
 const Request = require('../models/requestModel');
 const FoodDonation = require('../models/foodDonationModel');
-const Donor = require('../models/donorModel');
+const User = require('../models/userModel');
 const mongoose = require('mongoose');
 
 // Controller to create Request
@@ -13,8 +13,10 @@ const createRequest = async (req, res) => {
       foodDetails,
       donorId,
       ngoId,
+      donorEmail,
       location,
     } = req.body;
+    console.log(req.body);
 
     // Validate required fields
     if (
@@ -48,13 +50,16 @@ const createRequest = async (req, res) => {
         .json({ success: false, message: 'Invalid coordinates.' });
     }
     console.log(donorId);
+    console.log(typeof donorId);
     const objectId = new mongoose.Types.ObjectId(donorId);
-    console.log(typeof objectId)
+    console.log(typeof objectId);
+    console.log(objectId);
 
     // Fetch donor information from the database
-    const donor = await Donor.findOne({ donorId: objectId }).select(
+    const donor = await FoodDonation.findById(objectId).select(
       'name mobileNumber email',
     );
+
     if (!donor) {
       return res
         .status(404)
@@ -70,6 +75,7 @@ const createRequest = async (req, res) => {
       foodDetails,
       donorName: donor.name, // Use fetched donor info
       donorMobile: donor.mobileNumber,
+      donorEmail: donor.email,
       location: { type: 'Point', coordinates: [longitude, latitude] },
     });
 
@@ -183,18 +189,23 @@ const updateRequestStatus = async (req, res) => {
 // Get all requests for an NGO
 const getNgoRequests = async (req, res) => {
   try {
-    const { ngoId } = req.params;
-    if (!ngoId) {
+    const { id } = req.params;
+    // console.log(req.params);
+    if (!id) {
       return res
         .status(400)
-        .json({ success: false, message: 'NGO ID is required' });
+        .json({ success: false, message: 'Donor ID is not found' });
     }
 
-    const requests = await Request.find({ ngoId })
-      .populate('donorId', 'donorName donorMobile donorEmail')
-      .select('ngoName mobileNumber email donorId foodDetails status');
+    const donorId = new mongoose.Types.ObjectId(id);
+    console.log(donorId);
+    const all=await Request.find();
+    console.log(all);
+    const Donors = await Request.find({ donorId}); // Corrected line
+    console.log(Donors);
 
-    res.status(200).json({ success: true, data: requests });
+    res.status(200).json({ success: true, data: Donors });
+
   } catch (error) {
     console.error('Error getting NGO requests:', error);
     res.status(500).json({

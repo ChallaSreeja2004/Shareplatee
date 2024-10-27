@@ -33,12 +33,14 @@
 
             try {
                 const response = await axios.post('/login-ngo', { email, password });
-                if (response.data.success) {
-                    localStorage.setItem('ngoId', response.data.ngoId); // Store donorId in localStorage
+                console.log(response.data)
+                if (response.data.token) {
+                    localStorage.setItem('ngoId', response.data.user.id);
+                    localStorage.setItem('token', response.data.token); // Store donorId in localStorage
                     // Redirect to donation form or dashboard
                 }
                 // Store the token in local storage
-                localStorage.setItem('token', response.data.token);
+               // localStorage.setItem('token', response.data.token);
 
                 // Assuming a successful response redirects to the NGO dashboard
                 window.location.href = 'ngo-dashboard.html';

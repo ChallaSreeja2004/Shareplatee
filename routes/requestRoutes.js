@@ -2,15 +2,15 @@
 const express = require('express');
 const router = express.Router();
 const {
-    createRequest,
-    getNearbyDonors,
-    updateRequestStatus,
-    getNgoRequests
+  createRequest,
+  getNearbyDonors,
+  updateRequestStatus,
+  getNgoRequests,
 } = require('../controllers/requestController');
 const { protect } = require('../middlewares/authMiddleware'); // Assuming you have an auth middleware
 
 // Create a new request for food from an NGO
-router.post('/requests', createRequest);
+router.post('/', protect, createRequest);
 
 // Get nearby donors based on NGO's location (requires latitude, longitude, and radius)
 router.get('/donors/nearby', protect, getNearbyDonors);
@@ -19,6 +19,6 @@ router.get('/donors/nearby', protect, getNearbyDonors);
 router.patch('/requests/:requestId/status', protect, updateRequestStatus);
 
 // Get all requests made by a specific NGO
-router.get('/ngo/:ngoId/requests', protect, getNgoRequests); // Ensure this matches the controller logic
+router.get('/donor/:id', getNgoRequests); // Ensure this matches the controller logic
 
 module.exports = router;

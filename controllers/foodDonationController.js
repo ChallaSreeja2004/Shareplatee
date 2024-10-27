@@ -1,30 +1,56 @@
 //foodDonationController.js
 const FoodDonation = require('../models/foodDonationModel');
 const Donor = require('../models/donorModel'); // Import the Donor model
+const User = require('../models/userModel');
+const mongoose = require('mongoose');
 
 // Controller function to handle food donation submissions
 const donateFood = async (req, res) => {
-    const { name, email, mobile, quantity, description, latitude, longitude } = req.body;
+  const {
+    name,
+    email,
+    mobile,
+    quantity,
+    description,
+    latitude,
+    longitude,
+    userId,
+  } = req.body;
 
-    try {
-        const newDonation = new FoodDonation({
-            name,
-            email,
-            mobile,
-            quantity,
-            description,
-            location: {
-                type: 'Point',
-                coordinates: [longitude, latitude], // [longitude, latitude]
-            },
-        });
+  try {
+    console.log(userId);
+    const UserId = new mongoose.Types.ObjectId(userId);
+    console.log(UserId);
+    const { email: verifyEmail } = await User.findOne({
+      _id: UserId,
+      role: 'donor',
+    });
+    console.log(verifyEmail);
 
-        await newDonation.save();
-        res.status(201).json({ message: 'Food donation recorded successfully.' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error while saving donation.' });
+    console.log(verifyEmail);
+    if (verifyEmail !== email) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Email does not match' });
     }
+    const newDonation = new FoodDonation({
+      name,
+      email,
+      mobile,
+      quantity,
+      description,
+      location: {
+        type: 'Point',
+        coordinates: [longitude, latitude], // [longitude, latitude]
+      },
+    });
+
+    await newDonation.save();
+    res.status(201).json({ message: 'Food donation recorded successfully.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error while saving donation.' });
+  }
 };
 
 // Optional: Controller function to get all food donations (for admin or donor's review)

@@ -10,7 +10,7 @@ const {
 router.post('/', createDonor);
 
 // Get a donor by ID
-router.get('/:donorId', getDonorById);
+//router.get('/donor/requests/id', getDonorById);
 
 // Get all donors
 router.get('/', getAllDonors);

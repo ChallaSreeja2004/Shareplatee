@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', userRoutes);
 app.use('/food-donations', foodDonationRoutes);
-app.use(requestRoutes);
+app.use('/requests',requestRoutes);
 app.use(ngoRoutes);
 app.use(donorRoutes)
 
