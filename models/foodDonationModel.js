@@ -2,11 +2,11 @@
 const mongoose = require('mongoose');
 
 const foodDonationSchema = new mongoose.Schema({
-    // donorId: {
-    //     type: mongoose.Schema.Types.ObjectId, // Reference to the User model
-    //     required: true,
-    //     ref: 'Donor', // Make sure to reference the correct model name
-    // },
+    donorId: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to the User model
+        required: true,
+        ref: 'Donor', // Make sure to reference the correct model name
+    },
     name: {
         type: String,
         required: true,

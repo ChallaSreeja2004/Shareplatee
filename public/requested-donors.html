@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@
         }
     </script>
 </head>
+
 <body>
     <header>
         <h1>Requested Donors</h1>
@@ -25,7 +27,7 @@
     </header>
 
     <div class="container">
-        <table>
+        <table id="donorTable">
             <thead>
                 <tr>
                     <th>Donor Name</th>
@@ -38,33 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Donor 1</td>
-                    <td>+91 12345 67890</td>
-                    <td>donor1@example.com</td>
-                    <td>2024-10-19 10:30 AM</td>
-                    <td>10 kg</td>
-                    <td>Pending</td>
-                    <td><button onclick="cancelRequest('Donor 1')">Cancel</button></td>
-                </tr>
-                <tr>
-                    <td>Donor 2</td>
-                    <td>+91 09876 54321</td>
-                    <td>donor2@example.com</td>
-                    <td>2024-10-19 11:00 AM</td>
-                    <td>50 loaves</td>
-                    <td>Accepted</td>
-                    <td><button onclick="cancelRequest('Donor 2')">Cancel</button></td>
-                </tr>
-                <tr>
-                    <td>Donor 3</td>
-                    <td>+91 11223 44556</td>
-                    <td>donor3@example.com</td>
-                    <td>2024-10-19 11:30 AM</td>
-                    <td>5 kg</td>
-                    <td>Rejected</td>
-                    <td><button onclick="cancelRequest('Donor 3')">Cancel</button></td>
-                </tr>
+
             </tbody>
         </table>
     </div>
@@ -72,6 +48,8 @@
     <footer>
         <p>&copy; 2024 Share Plate. All rights reserved.</p>
     </footer>
-    <script src="map.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/requested-donors.js"></script>
 </body>
+
 </html>

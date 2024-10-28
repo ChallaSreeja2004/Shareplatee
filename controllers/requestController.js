@@ -56,7 +56,7 @@ const createRequest = async (req, res) => {
     console.log(objectId);
 
     // Fetch donor information from the database
-    const donor = await FoodDonation.findById(objectId).select(
+    const donor = await FoodDonation.findOne({ donorId: objectId }).select(
       'name mobileNumber email',
     );
 
@@ -157,9 +157,12 @@ const updateRequestStatus = async (req, res) => {
       });
     }
 
+    const reqId = new mongoose.Types.ObjectId(requestId);
+    console.log(reqId);
+    console.log(status);
     // Update the status of the request
     const updatedRequest = await Request.findByIdAndUpdate(
-      requestId,
+      reqId,
       { status },
       { new: true },
     ).populate('donorId', 'donorName donorMobile donorEmail'); // Populate donor details
@@ -199,13 +202,12 @@ const getNgoRequests = async (req, res) => {
 
     const donorId = new mongoose.Types.ObjectId(id);
     console.log(donorId);
-    const all=await Request.find();
-    console.log(all);
-    const Donors = await Request.find({ donorId}); // Corrected line
+    // const findemail=await FoodDonation.findOne({donorId:donorId}).email;
+    // const findDonor=await
+    const Donors = await Request.find({ donorId: donorId }); // Corrected line
     console.log(Donors);
 
     res.status(200).json({ success: true, data: Donors });
-
   } catch (error) {
     console.error('Error getting NGO requests:', error);
     res.status(500).json({
@@ -216,9 +218,79 @@ const getNgoRequests = async (req, res) => {
   }
 };
 
+const getDonorAcceptance = async (req, res) => {
+  try {
+    const { ngoId } = req.params;
+    // console.log(req.params);
+    if (!ngoId) {
+      return res
+        .status(400)
+        .json({ success: false, message: 'NGO ID is not found' });
+    }
+
+    const newId = new mongoose.Types.ObjectId(ngoId);
+    console.log(newId);
+
+    const Donors = await Request.find({ ngoId: newId }); // Corrected line
+    console.log(Donors);
+
+    res.status(200).json({ success: true, data: Donors });
+  } catch (error) {
+    console.error('Error getting Donors:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to get Donors',
+      error: error.message,
+    });
+  }
+};
+const deleteRequest = async (req, res) => {
+  try {
+    const { requestId } = req.params;
+
+    // Validate status
+
+    // Validate requestId format
+    if (!requestId || !/^[0-9a-fA-F]{24}$/.test(requestId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid Request ID format',
+      });
+    }
+
+    const reqId = new mongoose.Types.ObjectId(requestId);
+    console.log(reqId);
+
+    // Update the status of the request
+    const deletedRequest = await Request.findByIdAndDelete(reqId); // Populate donor details
+
+    if (!deletedRequest) {
+      return res.status(404).json({
+        success: false,
+        message: 'Request not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Request deleted successfully',
+      data: deletedRequest,
+    });
+  } catch (error) {
+    console.error('Error deleting request:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update request status',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createRequest,
   getNearbyDonors,
   updateRequestStatus,
   getNgoRequests,
+  getDonorAcceptance,
+  deleteRequest,
 };

@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         longitude: longitude,
         userId: ngoId,
       });
-      console.log(response)
+      console.log(response);
 
       //const ngoId = response.data.user.id; // Get the NGO ID
       alert(`NGO details saved successfully! Your NGO ID is ${ngoId}.`);
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${donor.mobile}</td>
                     <td>${donor.quantity}</td>
                     <td>${donor.description}</td>
-                    <td><button class="request-btn" data-donor-id="${donor._id}" data-quantity="${donor.quantity}">Request Food</button></td>
+                    <td><button class="request-btn" data-donor-id="${donor.donorId}" data-quantity="${donor.quantity}">Request Food</button></td>
                 `;
         donorList.appendChild(row);
       });
@@ -132,7 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           try {
-            const donor = donors.find((d) => d._id === donorId);
+            const donor = donors.find((d) => {
+              return d.donorId === donorId;
+            });
+            console.log(donor);
             const requestPayload = {
               ngoName: ngoDetails.name,
               mobileNumber: ngoDetails.mobile,
@@ -141,11 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: 'Point',
                 coordinates: [parseFloat(longitude), parseFloat(latitude)],
               },
-              donorId: donor._id,
+              donorId: donorId,
               ngoId: ngoId,
               foodDetails: {
                 foodQuantity: parseInt(quantity, 10),
-                description: `Requesting ${quantity} units of food`,
+                description: ` ${quantity} kgs`,
               },
               donorName: donor.name,
               donorMobile: donor.mobile,

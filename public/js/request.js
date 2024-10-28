@@ -7,13 +7,13 @@ const donorId = localStorage.getItem('donorId');
 async function fetchRequests() {
   try {
     const response = await axios.get(`/requests/donor/${donorId}`);
-    console.log(response);
+    console.log(response.data);
     if (response.length == 0) {
       alert('records not found');
     }
     if (response.status === 200) {
-      alert(response.data.length);
-      alert(response.status);
+      // alert(response.data.length);
+      // alert(response.status);
       displayRequests(response.data);
     } else {
       alert('Failed to fetch requests. Please try again later.');
@@ -28,7 +28,8 @@ async function fetchRequests() {
 function displayRequests(requests) {
   const requestTableBody = document.querySelector('#requestTable tbody');
   requestTableBody.innerHTML = ''; // Clear existing content
-  alert(Object.keys(requests).length);
+  //alert(Object.keys(requests).length);
+  console.log(requests);
 
   if (requests.length === 0) {
     requestTableBody.innerHTML =
@@ -36,14 +37,15 @@ function displayRequests(requests) {
     return;
   }
 
-  requests.forEach((request) => {
+  requests.data.forEach((request) => {
     const requestRow = document.createElement('tr');
 
     requestRow.innerHTML = `
-            <td>${request.ngoId.name}</td>
-            <td>${request.ngoId.mobile}</td>
-            <td>${request.ngoId.email}</td>
+            <td>${request.ngoName}</td>
+            <td>${request.mobileNumber}</td>
+            <td>${request.email}</td>
             <td>${new Date(request.createdAt).toLocaleString()}</td>
+            <td>${request.foodDetails.description}</td>
             <td>${request.foodDetails.foodQuantity}</td>
             <td>
                 <button onclick="acceptRequest('${
@@ -67,7 +69,17 @@ async function acceptRequest(requestId) {
   if (!confirmation) return;
 
   try {
-    await axios.patch(`/requests/${requestId}/status`, { status: 'accepted' });
+    axios.interceptors.request.use(config => {
+      const token = localStorage.getItem('token');
+      if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+  }, error => {
+      return Promise.reject(error);
+  });
+
+    await axios.patch(`/requests/${requestId}`, { status: 'accepted' });
     alert(`Request ${requestId} accepted!`);
     fetchRequests(); // Refresh requests after updating
   } catch (error) {
@@ -84,7 +96,16 @@ async function rejectRequest(requestId) {
   if (!confirmation) return;
 
   try {
-    await axios.patch(`/requests/${requestId}/status`, { status: 'rejected' });
+    axios.interceptors.request.use(config => {
+      const token = localStorage.getItem('token');
+      if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+  }, error => {
+      return Promise.reject(error);
+  });
+    await axios.patch(`/requests/${requestId}`, { status: 'rejected' });
     alert(`Request ${requestId} rejected!`);
     fetchRequests(); // Refresh requests after updating
   } catch (error) {

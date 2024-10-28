@@ -15,14 +15,15 @@ const donateFood = async (req, res) => {
     latitude,
     longitude,
     userId,
+
   } = req.body;
 
   try {
     console.log(userId);
-    const UserId = new mongoose.Types.ObjectId(userId);
-    console.log(UserId);
+    const donorId = new mongoose.Types.ObjectId(userId);
+    console.log(donorId);
     const { email: verifyEmail } = await User.findOne({
-      _id: UserId,
+      _id: donorId,
       role: 'donor',
     });
     console.log(verifyEmail);
@@ -43,6 +44,7 @@ const donateFood = async (req, res) => {
         type: 'Point',
         coordinates: [longitude, latitude], // [longitude, latitude]
       },
+      donorId
     });
 
     await newDonation.save();

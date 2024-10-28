@@ -6,6 +6,8 @@ const {
   getNearbyDonors,
   updateRequestStatus,
   getNgoRequests,
+  getDonorAcceptance,
+  deleteRequest,
 } = require('../controllers/requestController');
 const { protect } = require('../middlewares/authMiddleware'); // Assuming you have an auth middleware
 
@@ -16,9 +18,13 @@ router.post('/', protect, createRequest);
 router.get('/donors/nearby', protect, getNearbyDonors);
 
 // Update the status of a specific request (accept/reject by donor)
-router.patch('/requests/:requestId/status', protect, updateRequestStatus);
+router.patch('/:requestId', protect, updateRequestStatus);
 
 // Get all requests made by a specific NGO
 router.get('/donor/:id', getNgoRequests); // Ensure this matches the controller logic
+
+router.get('/ngo/:ngoId', getDonorAcceptance);
+
+router.delete('/:requestId', deleteRequest);
 
 module.exports = router;
